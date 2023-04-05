@@ -192,7 +192,7 @@ module.exports = {
       let paymentStatus = JSON.stringify(statusResponse);
 
       Transaksi.update(
-        { payment: paymentStatus, paid: "Telah Dibayar" },
+        { payment: paymentStatus, paid: statusResponse.transaction_status },
         {
           where: { id: orderId },
         }

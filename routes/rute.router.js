@@ -13,8 +13,8 @@ const verifyUserToken = require("../middlewares/user.auth");
 
 router.get("/", getAllRute);
 router.get("/:id", getRuteByID);
-router.post("/", addRute);
-router.delete("/:id", deleteRuteByID);
-router.put("/:id", updateRuteByID);
+router.post("/", verifyAdminToken, addRute);
+router.delete("/:id", verifyAdminToken, deleteRuteByID);
+router.put("/:id", verifyAdminToken, updateRuteByID);
 
 module.exports = router;
