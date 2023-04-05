@@ -14,10 +14,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "vX5Qpjh8M83HOmaBFG3W",
-    "database": "railway",
-    "host": "containers-us-west-80.railway.app",
+    "username": "lajujaya_1",
+    "password": "lajujaya123",
+    "database": "lajujaya_reservasi",
+    "host": "103.247.11.118",
     "dialect": "mysql"
   }
 }
