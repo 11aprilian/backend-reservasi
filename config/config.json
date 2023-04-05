@@ -14,10 +14,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "lajujaya_1",
-    "password": "lajujaya123",
-    "database": "lajujaya_reservasi",
-    "host": "103.247.11.118",
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   }
 }
