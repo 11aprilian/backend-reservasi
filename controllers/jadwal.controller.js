@@ -35,7 +35,6 @@ module.exports = {
   },
 
   addJadwal: async (req, res) => {
-
     Jadwal.create({
       jam: req.body.jam,
       createdAt: new Date(),
@@ -56,7 +55,7 @@ module.exports = {
       },
     })
       .then(function (result) {
-        res.json({message: "Data berhasil dihapus!"});
+        res.json({ message: "Data berhasil dihapus!" });
       })
       .catch(function (error) {
         res.json({ error: error });
@@ -66,7 +65,7 @@ module.exports = {
   updateJadwalByID: (req, res) => {
     Jadwal.update(
       {
-        jam: req.body.jam
+        jam: req.body.jam,
       },
       {
         where: {
@@ -75,7 +74,7 @@ module.exports = {
       }
     )
       .then(function (result) {
-        res.json({message: "Data berhasil diperbarui!"});
+        res.json({ message: "Data berhasil diperbarui!" });
       })
       .catch(function (error) {
         res.json({ error: error });

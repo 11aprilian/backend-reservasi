@@ -7,7 +7,7 @@ const {
   addAdmin,
   deleteAdminByID,
   updateAdminByID,
-  login
+  login,
 } = require("../controllers/admin.controller");
 const verifyAdminToken = require("../middlewares/admin.auth");
 

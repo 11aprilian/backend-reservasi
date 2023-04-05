@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
 
     const token =
       req.headers.authorization.split(" ")[1] || req.headers.authorization;
-    const verified = jwt.verify(token, process.env.SECRET_KEY) 
+    const verified = jwt.verify(token, process.env.SECRET_KEY);
 
     if (!token)
       return res.status(401).send({ message: "User Tidak Memiliki Akses" });

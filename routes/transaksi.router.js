@@ -8,7 +8,7 @@ const {
   addTransaksi,
   deleteTransaksiByID,
   updateTransaksiByID,
-  notifTransaksi
+  notifTransaksi,
 } = require("../controllers/transaksi.controller");
 const verifyAdminToken = require("../middlewares/admin.auth");
 const verifyUserToken = require("../middlewares/user.auth");

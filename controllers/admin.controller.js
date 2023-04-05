@@ -45,7 +45,9 @@ module.exports = {
 
   addAdmin: async (req, res) => {
     const { username, password } = req.body;
-    const usernameExist = await Admin.findOne({ where: { username: username } });
+    const usernameExist = await Admin.findOne({
+      where: { username: username },
+    });
 
     if (!password)
       return res.status(400).send({

@@ -15,25 +15,22 @@ let coreApi = new midtransClient.CoreApi({
 module.exports = {
   getAllTransaksi: async (req, res) => {
     try {
-      const transaksi = await Transaksi
-        .findAll(
+      const transaksi = await Transaksi.findAll({
+        include: [
           {
-          include: [
-            {
-              model: User,
-              as: "User",
-            },
-            {
-              model: Rute,
-              as: "Rute",
-            },
-            {
-              model: Jadwal,
-              as: "Jadwal",
-            },
-          ],
-        }
-        );
+            model: User,
+            as: "User",
+          },
+          {
+            model: Rute,
+            as: "Rute",
+          },
+          {
+            model: Jadwal,
+            as: "Jadwal",
+          },
+        ],
+      });
       res.json({
         message: "Data ditemukan!",
         data: transaksi,
@@ -50,9 +47,8 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const transaksi = await Transaksi.findByPk(
-        id,
-        {include: [
+      const transaksi = await Transaksi.findByPk(id, {
+        include: [
           {
             model: User,
             as: "User",
@@ -65,7 +61,8 @@ module.exports = {
             model: Jadwal,
             as: "Jadwal",
           },
-        ],});
+        ],
+      });
 
       if (transaksi)
         res.status(200).json({
@@ -84,30 +81,27 @@ module.exports = {
       });
     }
   },
-  
+
   getTransaksiByUserID: async (req, res, next) => {
     try {
-      const { id } = req.params
-      const transaksi = await Transaksi
-        .findAll(
+      const { id } = req.params;
+      const transaksi = await Transaksi.findAll({
+        include: [
           {
-          include: [
-            {
-              model: User,
-              as: "User",
-            },
-            {
-              model: Rute,
-              as: "Rute",
-            },
-            {
-              model: Jadwal,
-              as: "Jadwal",
-            },
-          ],
-          where : { UserId : id }
-        }
-        );
+            model: User,
+            as: "User",
+          },
+          {
+            model: Rute,
+            as: "Rute",
+          },
+          {
+            model: Jadwal,
+            as: "Jadwal",
+          },
+        ],
+        where: { UserId: id },
+      });
       res.json({
         message: "Data ditemukan!",
         data: transaksi,
@@ -141,7 +135,7 @@ module.exports = {
           chargeResponse.permata_va_number ||
           JSON.stringify(
             chargeResponse.va_numbers.map(({ va_number }) => va_number)
-          ).replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'')
+          ).replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, ""),
       };
 
       Transaksi.create(dataOrder)
@@ -198,9 +192,7 @@ module.exports = {
       let paymentStatus = JSON.stringify(statusResponse);
 
       Transaksi.update(
-        { payment: paymentStatus,
-          paid: "Telah Dibayar"
-         },
+        { payment: paymentStatus, paid: "Telah Dibayar" },
         {
           where: { id: orderId },
         }
