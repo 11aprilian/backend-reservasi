@@ -19,6 +19,6 @@ router.get("/user/:id", getTransaksiByUserID);
 router.post("/", verifyUserToken, addTransaksi);
 router.delete("/:id", deleteTransaksiByID);
 router.put("/:id", updateTransaksiByID);
-router.post("/notifikasi/:id", notifTransaksi);
+router.post("/notifikasi/", notifTransaksi);
 
 module.exports = router;
