@@ -129,7 +129,7 @@ module.exports = {
         updatedAt: new Date(),
         payment: JSON.stringify(chargeResponse),
         total: chargeResponse.gross_amount,
-        paid: chargeResponse.transaction_status,
+        paid: "Pending",
         bank: req.body.bank_transfer.bank,
         va_number:
           chargeResponse.permata_va_number ||
