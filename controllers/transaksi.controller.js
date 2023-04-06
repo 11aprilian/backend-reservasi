@@ -188,7 +188,7 @@ module.exports = {
   },
   notifTransaksi: async (req, res, next) => {
     coreApi.transaction.notification(req.body).then((statusResponse) => {
-      let orderId = req.body.order_id;
+      let orderId = statusResponse.order_id;
       let paymentStatus = JSON.stringify(statusResponse);
 
       Transaksi.update(
