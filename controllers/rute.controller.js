@@ -45,7 +45,7 @@ module.exports = {
     const { name } = req.params;
 
     try {
-      const rute = await Rute.findAll({ where: { arah: name },
+      const rute = await Rute.findOne({ where: { arah: name },
       });
 
       if (rute)
