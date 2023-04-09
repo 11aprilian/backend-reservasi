@@ -41,6 +41,31 @@ module.exports = {
     }
   },
 
+  getRuteByName: async (req, res) => {
+    const { name } = req.params;
+
+    try {
+      const rute = await Rute.findAll({ where: { arah: name },
+      });
+
+      if (rute)
+        res.status(200).json({
+          message: "Data ditemukan!",
+          data: rute,
+        });
+
+      if (!rute)
+        res.json({
+          message: "Data tidak ditemukan!",
+        });
+    } catch (error) {
+      res.status(500).send({
+        status: res.statusCode,
+        message: error.message,
+      });
+    }
+  },
+
   addRute: async (req, res) => {
     Rute.create({
       arah: req.body.arah,
