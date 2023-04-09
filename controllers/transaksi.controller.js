@@ -114,6 +114,38 @@ module.exports = {
     }
   },
 
+  getTransaksiByStatus: async (req, res, next) => {
+    try {
+      const { id, status } = req.params;
+      const transaksi = await Transaksi.findAll({
+        include: [
+          {
+            model: User,
+            as: "User",
+          },
+          {
+            model: Rute,
+            as: "Rute",
+          },
+          {
+            model: Jadwal,
+            as: "Jadwal",
+          },
+        ],
+        where: { UserId: id, paid: status },
+      });
+      res.json({
+        message: "Data ditemukan!",
+        data: transaksi,
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: res.statusCode,
+        message: error.message,
+      });
+    }
+  },
+
   addTransaksi: async (req, res, next) => {
     coreApi.charge(req.body).then((chargeResponse) => {
       var dataOrder = {
