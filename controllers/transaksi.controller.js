@@ -30,6 +30,7 @@ module.exports = {
             as: "Jadwal",
           },
         ],
+        order: [["updatedAt", "DESC"]],
       });
       res.json({
         message: "Data ditemukan!",
@@ -101,6 +102,7 @@ module.exports = {
           },
         ],
         where: { UserId: id },
+        order: [["updatedAt", "DESC"]],
       });
       res.json({
         message: "Data ditemukan!",
@@ -133,6 +135,7 @@ module.exports = {
           },
         ],
         where: { UserId: id, paid: status },
+        order: [["updatedAt", "DESC"]],
       });
       res.json({
         message: "Data ditemukan!",
