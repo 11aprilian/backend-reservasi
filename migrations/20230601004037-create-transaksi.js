@@ -11,9 +11,13 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: 'Rutes', key: 'id' }
       },
-      JadwalId: {
+      JadwalDriverId: {
         type: Sequelize.INTEGER,
-        references: { model: 'Jadwals', key: 'id' }
+        references: { model: 'Jadwal_drivers', key: 'id' }
+      },
+      DriverId: {
+        type: Sequelize.INTEGER,
+        references: { model: 'Drivers', key: 'id' }
       },
       id: {
         allowNull: false,
@@ -27,9 +31,6 @@ module.exports = {
         type: Sequelize.STRING
       },
       no_hp: {
-        type: Sequelize.STRING
-      },
-      tanggal: {
         type: Sequelize.STRING
       },
       payment: {

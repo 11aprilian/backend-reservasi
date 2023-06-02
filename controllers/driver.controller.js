@@ -1,24 +1,13 @@
 const models = require("../models");
-const { Jadwal_driver, Tanggal, Jadwal } = models;
+const { Driver } = models;
 
 module.exports = {
-  getAllJadwalDriver: async (req, res) => {
+  getAllDriver: async (req, res) => {
     try {
-      const jadwal_driver = await Jadwal_driver.findAll({
-        include: [
-            {
-              model: Tanggal,
-              as: "Tanggal",
-            },
-            {
-              model: Jadwal,
-              as: "Jadwal",
-            },
-          ],
-      });
+      const driver = await Driver.findAll();
       res.json({
         message: "Data ditemukan!",
-        data: jadwal_driver,
+        data: driver,
       });
     } catch (error) {
       res.status(500).send({
@@ -28,22 +17,15 @@ module.exports = {
     }
   },
 
-  getJadwalDriverByID: async (req, res) => {
+  getDriverByID: async (req, res) => {
     const { id } = req.params;
 
     try {
-      const jadwal_driver = await Jadwal_driver.findByPk(id);
-
-      if (jadwal_driver)
-        res.status(200).json({
-          message: "Data ditemukan!",
-          data: jadwal_driver,
-        });
-
-      if (!jadwal_driver)
-        res.json({
-          message: "Data tidak ditemukan!",
-        });
+      const driver = await Driver.findByPk(id);
+      res.json({
+        message: "Data ditemukan!",
+        data: driver,
+      });
     } catch (error) {
       res.status(500).send({
         status: res.statusCode,
@@ -52,10 +34,9 @@ module.exports = {
     }
   },
 
-  addJadwalDriver: async (req, res) => {
-    Jadwal_driver.create({
-      TanggalId: req.body.TanggalId,
-      JadwalId : req.body.JadwalId
+  addDriver: async (req, res) => {
+    Driver.create({
+      nama: req.body.nama
     })
       .then(function (result) {
         res.json(result);
@@ -65,8 +46,8 @@ module.exports = {
       });
   },
 
-  deleteJadwalDriverByID: (req, res) => {
-    Jadwal_driver.destroy({
+  deleteDriverByID: (req, res) => {
+    Driver.destroy({
       where: {
         id: req.params.id,
       },
@@ -79,11 +60,10 @@ module.exports = {
       });
   },
 
-  updateJadwalDriverByID: (req, res) => {
-    Jadwal_driver.update(
+  updateDriverByID: (req, res) => {
+    Driver.update(
       {
-        TanggalId: req.body.TanggalId,
-        JadwalId : req.body.JadwalId
+        nama: req.body.nama,
       },
       {
         where: {

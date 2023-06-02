@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
 
       Jadwal_driver.belongsTo(models.Jadwal)
       models.Jadwal.hasMany(Jadwal_driver)
+
+      // Jadwal_driver.belongsToMany(models.Driver, { 
+      //   through: models.Driver_option,
+      //   foreignKey: 'DriverId',
+      //   otherKey: 'Jadwal_driverId',
+      // });
     }
   }
   Jadwal_driver.init({

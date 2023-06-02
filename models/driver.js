@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // Driver.belongsToMany(models.Jadwal_driver, { 
+      //   through: models.Driver_option,
+      //   foreignKey: 'Jadwal_driverId',
+      //   otherKey: 'DriverId',
+      // });
     }
   }
   Driver.init({

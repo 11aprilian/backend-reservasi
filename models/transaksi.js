@@ -17,8 +17,11 @@ module.exports = (sequelize, DataTypes) => {
       Transaksi.belongsTo(models.Rute)
       models.Rute.hasMany(Transaksi)
 
-      Transaksi.belongsTo(models.Jadwal)
-      models.Jadwal.hasMany(Transaksi)
+      Transaksi.belongsTo(models.Driver)
+      models.Driver.hasMany(Transaksi)
+
+      Transaksi.belongsTo(models.Jadwal_driver)
+      models.Jadwal_driver.hasMany(Transaksi)
     }
   }
   Transaksi.init({
@@ -28,7 +31,6 @@ module.exports = (sequelize, DataTypes) => {
     nama: DataTypes.STRING,
     alamat: DataTypes.STRING,
     no_hp: DataTypes.STRING,
-    tanggal: DataTypes.STRING,
     payment: DataTypes.TEXT,
     total: DataTypes.INTEGER,
     paid: DataTypes.STRING,
