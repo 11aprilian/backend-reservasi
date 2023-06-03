@@ -15,6 +15,37 @@ module.exports = {
               as: "Jadwal",
             },
           ],
+          order: [["TanggalId", "DESC"]],
+          limit: [35]
+      });
+      res.json({
+        message: "Data ditemukan!",
+        data: jadwal_driver,
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: res.statusCode,
+        message: error.message,
+      });
+    }
+  },
+
+  getAllJadwalDriverByTanggal: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const jadwal_driver = await Jadwal_driver.findAll({
+        include: [
+            {
+              model: Tanggal,
+              as: "Tanggal",
+            },
+            {
+              model: Jadwal,
+              as: "Jadwal",
+            },
+          ],
+          order: [["TanggalId", "DESC"]],
+          where: {TanggalId : id}
       });
       res.json({
         message: "Data ditemukan!",

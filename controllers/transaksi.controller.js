@@ -1,8 +1,5 @@
 const models = require("../models");
-const { Transaksi } = models;
-const { User } = models;
-const { Rute } = models;
-const { Jadwal } = models;
+const { Transaksi, User, Rute, Jadwal_driver, Driver, Tanggal, Jadwal } = models;
 
 const midtransClient = require("midtrans-client");
 
@@ -26,8 +23,22 @@ module.exports = {
             as: "Rute",
           },
           {
-            model: Jadwal,
-            as: "Jadwal",
+            model: Jadwal_driver,
+            as: "Jadwal_driver",
+            include: [
+              {
+                model: Tanggal,
+                as: "Tanggal",
+              },
+              {
+                model: Jadwal,
+                as: "Jadwal",
+              },
+            ],
+          },
+          {
+            model: Driver,
+            as: "Driver",
           },
         ],
         order: [["updatedAt", "DESC"]],
@@ -59,8 +70,22 @@ module.exports = {
             as: "Rute",
           },
           {
-            model: Jadwal,
-            as: "Jadwal",
+            model: Jadwal_driver,
+            as: "Jadwal_driver",
+            include: [
+              {
+                model: Tanggal,
+                as: "Tanggal",
+              },
+              {
+                model: Jadwal,
+                as: "Jadwal",
+              },
+            ],
+          },
+          {
+            model: Driver,
+            as: "Driver",
           },
         ],
       });
@@ -97,8 +122,22 @@ module.exports = {
             as: "Rute",
           },
           {
-            model: Jadwal,
-            as: "Jadwal",
+            model: Jadwal_driver,
+            as: "Jadwal_driver",
+            include: [
+              {
+                model: Tanggal,
+                as: "Tanggal",
+              },
+              {
+                model: Jadwal,
+                as: "Jadwal",
+              },
+            ],
+          },
+          {
+            model: Driver,
+            as: "Driver",
           },
         ],
         where: { UserId: id },
@@ -130,8 +169,22 @@ module.exports = {
             as: "Rute",
           },
           {
-            model: Jadwal,
-            as: "Jadwal",
+            model: Jadwal_driver,
+            as: "Jadwal_driver",
+            include: [
+              {
+                model: Tanggal,
+                as: "Tanggal",
+              },
+              {
+                model: Jadwal,
+                as: "Jadwal",
+              },
+            ],
+          },
+          {
+            model: Driver,
+            as: "Driver",
           },
         ],
         where: { UserId: id, paid: status },
@@ -155,11 +208,11 @@ module.exports = {
         id: chargeResponse.order_id,
         UserId: req.body.UserId,
         RuteId: req.body.RuteId,
-        JadwalId: req.body.JadwalId,
+        JadwalDriverId: req.body.JadwalDriverId,
+        DriverId: req.body.DriverId,
         nama: req.body.nama,
         alamat: req.body.alamat,
         no_hp: req.body.no_hp,
-        tanggal: req.body.tanggal,
         createdAt: new Date(),
         updatedAt: new Date(),
         payment: JSON.stringify(chargeResponse),
@@ -200,13 +253,13 @@ module.exports = {
   updateTransaksiByID: (req, res) => {
     Transaksi.update(
       {
-        id_user: req.body.id_user,
-        id_rute: req.body.id_rute,
-        id_jadwal: req.body.id_jadwal,
+        UserId: req.body.UserId,
+        RuteId: req.body.RuteId,
+        JadwalDriverId: req.body.JadwalDriverId,
+        DriverId: req.body.DriverId,
         nama: req.body.nama,
         alamat: req.body.alamat,
         no_hp: req.body.no_hp,
-        tanggal: req.body.tanggal,
       },
       {
         where: {

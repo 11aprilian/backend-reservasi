@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   getAllJadwalDriver,
   getJadwalDriverByID,
+  getAllJadwalDriverByTanggal,
   addJadwalDriver,
   deleteJadwalDriverByID,
   updateJadwalDriverByID,
@@ -13,6 +14,7 @@ const verifyUserToken = require("../middlewares/user.auth");
 
 router.get("/", getAllJadwalDriver);
 router.get("/:id", getJadwalDriverByID);
+router.get("/tanggal/:id", getAllJadwalDriverByTanggal);
 router.post("/", addJadwalDriver);
 router.delete("/:id", deleteJadwalDriverByID);
 router.put("/:id", updateJadwalDriverByID);
