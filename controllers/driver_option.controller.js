@@ -1,5 +1,5 @@
 const models = require("../models");
-const { Driver_option, Jadwal_driver, Driver } = models;
+const { Driver_option, Jadwal_driver, Driver, Tanggal, Jadwal } = models;
 
 module.exports = {
   getAllDriverOption: async (req, res) => {
@@ -13,6 +13,16 @@ module.exports = {
             {
               model: Jadwal_driver,
               as: "Jadwal_driver",
+              include: [
+                {
+                  model: Tanggal,
+                  as: "Tanggal"
+                },
+                {
+                  model: Jadwal,
+                  as: "Jadwal"
+                }
+              ]
             },
           ],
       });
@@ -40,6 +50,16 @@ module.exports = {
             {
               model: Jadwal_driver,
               as: "Jadwal_driver",
+              include: [
+                {
+                  model: Tanggal,
+                  as: "Tanggal"
+                },
+                {
+                  model: Jadwal,
+                  as: "Jadwal"
+                }
+              ]
             },
           ],
           where: { DriverId: driver }
@@ -68,6 +88,16 @@ module.exports = {
             {
               model: Jadwal_driver,
               as: "Jadwal_driver",
+              include: [
+                {
+                  model: Tanggal,
+                  as: "Tanggal"
+                },
+                {
+                  model: Jadwal,
+                  as: "Jadwal"
+                }
+              ]
             },
           ],
           where: { JadwalDriverId: jadwaldriver }
@@ -112,7 +142,7 @@ module.exports = {
     Driver_option.create({
       DriverId: req.body.DriverId,
       JadwalDriverId : req.body.JadwalDriverId,
-      status: req.body.status
+      status: "available"
     })
       .then(function (result) {
         res.json(result);
