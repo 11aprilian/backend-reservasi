@@ -7,17 +7,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: 'Users', key: 'id' }
       },
-      RuteId: {
-        type: Sequelize.INTEGER,
-        references: { model: 'Rutes', key: 'id' }
-      },
       JadwalDriverId: {
         type: Sequelize.INTEGER,
         references: { model: 'Jadwal_drivers', key: 'id' }
-      },
-      DriverId: {
-        type: Sequelize.INTEGER,
-        references: { model: 'Drivers', key: 'id' }
       },
       id: {
         allowNull: false,
@@ -25,6 +17,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       nama: {
+        type: Sequelize.STRING
+      },
+      tanggal: {
         type: Sequelize.STRING
       },
       alamat: {

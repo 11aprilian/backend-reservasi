@@ -1,13 +1,13 @@
 const models = require("../models");
-const { Jadwal } = models;
+const { Jam } = models;
 
 module.exports = {
-  getAllJadwal: async (req, res) => {
+  getAllJam: async (req, res) => {
     try {
-      const jadwal = await Jadwal.findAll();
+      const jam = await Jam.findAll();
       res.json({
         message: "Data ditemukan!",
-        data: jadwal,
+        data: jam,
       });
     } catch (error) {
       res.status(500).send({
@@ -17,14 +17,14 @@ module.exports = {
     }
   },
 
-  getJadwalByID: async (req, res) => {
+  getJamByID: async (req, res) => {
     const { id } = req.params;
 
     try {
-      const jadwal = await Jadwal.findByPk(id);
+      const jam = await Jam.findByPk(id);
       res.json({
         message: "Data ditemukan!",
-        data: jadwal,
+        data: jam,
       });
     } catch (error) {
       res.status(500).send({
@@ -34,8 +34,8 @@ module.exports = {
     }
   },
 
-  addJadwal: async (req, res) => {
-    Jadwal.create({
+  addJam: async (req, res) => {
+    Jam.create({
       jam: req.body.jam,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -48,8 +48,8 @@ module.exports = {
       });
   },
 
-  deleteJadwalByID: (req, res) => {
-    Jadwal.destroy({
+  deleteJamByID: (req, res) => {
+    Jam.destroy({
       where: {
         id: req.params.id,
       },
@@ -62,8 +62,8 @@ module.exports = {
       });
   },
 
-  updateJadwalByID: (req, res) => {
-    Jadwal.update(
+  updateJamByID: (req, res) => {
+    Jam.update(
       {
         jam: req.body.jam,
       },

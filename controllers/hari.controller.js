@@ -1,13 +1,13 @@
 const models = require("../models");
-const { Tanggal } = models;
+const { Hari } = models;
 
 module.exports = {
-  getAllTanggal: async (req, res) => {
+  getAllHari: async (req, res) => {
     try {
-      const tanggals = await Tanggal.findAll();
+      const hari = await Hari.findAll();
       res.json({
         message: "Data ditemukan!",
-        data: tanggals,
+        data: hari,
       });
     } catch (error) {
       res.status(500).send({
@@ -17,19 +17,19 @@ module.exports = {
     }
   },
 
-  getTanggalByID: async (req, res) => {
+  getHariByID: async (req, res) => {
     const { id } = req.params;
 
     try {
-      const tanggal = await Tanggal.findByPk(id);
+      const hari = await Hari.findByPk(id);
 
-      if (tanggal)
+      if (hari)
         res.status(200).json({
           message: "Data ditemukan!",
-          data: tanggal,
+          data: hari,
         });
 
-      if (!tanggal)
+      if (!hari)
         res.json({
           message: "Data tidak ditemukan!",
         });
@@ -41,9 +41,9 @@ module.exports = {
     }
   },
 
-  addTanggal: async (req, res) => {
-    Tanggal.create({
-      tanggal: req.body.tanggal
+  addHari: async (req, res) => {
+    Hari.create({
+      hari: req.body.hari
     })
       .then(function (result) {
         res.json(result);
@@ -53,8 +53,8 @@ module.exports = {
       });
   },
 
-  deleteTanggalByID: (req, res) => {
-    Tanggal.destroy({
+  deleteHariByID: (req, res) => {
+    Hari.destroy({
       where: {
         id: req.params.id,
       },
@@ -67,10 +67,10 @@ module.exports = {
       });
   },
 
-  updateTanggalByID: (req, res) => {
-    Tanggal.update(
+  updateHariByID: (req, res) => {
+    Hari.update(
       {
-        tanggal: req.body.tanggal
+        hari: req.body.hari
       },
       {
         where: {

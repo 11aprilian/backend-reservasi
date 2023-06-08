@@ -12,11 +12,8 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await queryInterface.bulkInsert('Jadwals', [
-      {jam:"23.00", createdAt: new Date(), updatedAt: new Date()},
-      {jam:"04.00", createdAt: new Date(), updatedAt: new Date()},
+    await queryInterface.bulkInsert('Jam', [
       {jam:"07.00", createdAt: new Date(), updatedAt: new Date()},
-      {jam:"10.00", createdAt: new Date(), updatedAt: new Date()},
       {jam:"14.00", createdAt: new Date(), updatedAt: new Date()},
       {jam:"20.00", createdAt: new Date(), updatedAt: new Date()},      
      ])

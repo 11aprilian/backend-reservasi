@@ -1,5 +1,5 @@
 const models = require("../models");
-const { Jadwal_driver, Tanggal, Jadwal } = models;
+const { Jadwal_driver, Hari, Jam, Rute, Driver } = models;
 
 module.exports = {
   getAllJadwalDriver: async (req, res) => {
@@ -7,16 +7,23 @@ module.exports = {
       const jadwal_driver = await Jadwal_driver.findAll({
         include: [
             {
-              model: Tanggal,
-              as: "Tanggal",
+              model: Hari,
+              as: "Hari",
             },
             {
-              model: Jadwal,
-              as: "Jadwal",
+              model: Jam,
+              as: "Jam",
+            },
+            {
+              model: Rute,
+              as: "Rute",
+            },
+            {
+              model: Driver,
+              as: "Driver",
             },
           ],
-          order: [["TanggalId", "DESC"]],
-          limit: [35]
+          
       });
       res.json({
         message: "Data ditemukan!",
@@ -30,22 +37,70 @@ module.exports = {
     }
   },
 
-  getAllJadwalDriverByTanggal: async (req, res) => {
+  getAllJadwalDriverByHari: async (req, res) => {
     const { id } = req.params;
     try {
       const jadwal_driver = await Jadwal_driver.findAll({
         include: [
             {
-              model: Tanggal,
-              as: "Tanggal",
+              model: Hari,
+              as: "Hari",
             },
             {
-              model: Jadwal,
-              as: "Jadwal",
+              model: Jam,
+              as: "Jam",
+            },
+            {
+              model: Rute,
+              as: "Rute",
+            },
+            {
+              model: Driver,
+              as: "Driver",
             },
           ],
-          order: [["TanggalId", "DESC"]],
-          where: {TanggalId : id}
+          order: [["HariId", "DESC"]],
+          where: {HariId : id}
+      });
+      res.json({
+        message: "Data ditemukan!",
+        data: jadwal_driver,
+      });
+    } catch (error) {
+      res.status(500).send({
+        status: res.statusCode,
+        message: error.message,
+      });
+    }
+  },
+
+  getJadwalDriverByHariRuteJam: async (req, res) => {
+    const { hari, rute, jam } = req.params;
+    try {
+      const jadwal_driver = await Jadwal_driver.findOne({
+        include: [
+            {
+              model: Hari,
+              as: "Hari",
+            },
+            {
+              model: Jam,
+              as: "Jam",
+            },
+            {
+              model: Rute,
+              as: "Rute",
+            },
+            {
+              model: Driver,
+              as: "Driver",
+            },
+          ],
+          where: {
+            HariId : hari,
+            RuteId : rute,
+            JamId : jam
+          }
       });
       res.json({
         message: "Data ditemukan!",
@@ -63,7 +118,26 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const jadwal_driver = await Jadwal_driver.findByPk(id);
+      const jadwal_driver = await Jadwal_driver.findByPk(id,{
+        include: [
+          {
+            model: Hari,
+            as: "Hari",
+          },
+          {
+            model: Jam,
+            as: "Jam",
+          },
+          {
+            model: Rute,
+            as: "Rute",
+          },
+          {
+            model: Driver,
+            as: "Driver",
+          },
+        ],
+      });
 
       if (jadwal_driver)
         res.status(200).json({
@@ -85,8 +159,10 @@ module.exports = {
 
   addJadwalDriver: async (req, res) => {
     Jadwal_driver.create({
-      TanggalId: req.body.TanggalId,
-      JadwalId : req.body.JadwalId
+      HariId: req.body.HariId,
+      JamId : req.body.JamId,
+      RuteId: req.body.RuteId,
+      DriverId : req.body.DriverId
     })
       .then(function (result) {
         res.json(result);
@@ -113,8 +189,7 @@ module.exports = {
   updateJadwalDriverByID: (req, res) => {
     Jadwal_driver.update(
       {
-        TanggalId: req.body.TanggalId,
-        JadwalId : req.body.JadwalId
+        DriverId: req.body.DriverId,
       },
       {
         where: {

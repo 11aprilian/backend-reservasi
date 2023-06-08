@@ -13,7 +13,7 @@ const verifyAdminToken = require("../middlewares/admin.auth");
 
 router.get("/", getAllAdmin);
 router.get("/:id", getAdminByID);
-router.post("/", addAdmin);
+router.post("/register", addAdmin);
 router.delete("/:id", deleteAdminByID);
 router.put("/:id", updateAdminByID);
 router.post("/login", login);

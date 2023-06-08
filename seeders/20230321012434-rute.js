@@ -36,13 +36,7 @@ module.exports = {
         harga:"150000", 
         createdAt: new Date(), 
         updatedAt: new Date()
-      },
-      {
-        arah:"TRENGGALEK-SURABAYA", 
-        harga:"170000", 
-        createdAt: new Date(), 
-        updatedAt: new Date()
-      },         
+      },       
      ])
   },
 

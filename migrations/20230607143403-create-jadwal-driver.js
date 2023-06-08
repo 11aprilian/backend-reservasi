@@ -9,13 +9,21 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      JadwalId: {
+      JamId: {
         type: Sequelize.INTEGER,
-        references: { model: 'Jadwals', key: 'id' }
+        references: { model: 'Jam', key: 'id' }
       },
-      TanggalId: {
+      HariId: {
         type: Sequelize.INTEGER,
-        references: { model: 'Tanggals', key: 'id' }
+        references: { model: 'Haris', key: 'id' }
+      },
+      RuteId: {
+        type: Sequelize.INTEGER,
+        references: { model: 'Rutes', key: 'id' }
+      },
+      DriverId: {
+        type: Sequelize.INTEGER,
+        references: { model: 'Drivers', key: 'id' }
       },
       createdAt: {
         allowNull: false,

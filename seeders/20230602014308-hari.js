@@ -12,39 +12,39 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await queryInterface.bulkInsert('Tanggals', [
+    await queryInterface.bulkInsert('Haris', [
       {
-        tanggal:"3 Juni 2023",
+        hari:"Minggu",
         createdAt: new Date(), 
         updatedAt: new Date()
       },
       {
-        tanggal:"4 Juni 2023",
+        hari:"Senin",
         createdAt: new Date(), 
         updatedAt: new Date()
       },
       {
-        tanggal:"5 Juni 2023",
+        hari:"Selasa",
         createdAt: new Date(), 
         updatedAt: new Date()
       },
       {
-        tanggal:"6 Juni 2023",
+        hari:"Rabu",
         createdAt: new Date(), 
         updatedAt: new Date()
       },
       {
-        tanggal:"7 Juni 2023",
+        hari:"Kamis",
         createdAt: new Date(), 
         updatedAt: new Date()
       },
       {
-        tanggal:"8 Juni 2023",
+        hari:"Jumat",
         createdAt: new Date(), 
         updatedAt: new Date()
       },
       {
-        tanggal:"9 Juni 2023",
+        hari:"Sabtu",
         createdAt: new Date(), 
         updatedAt: new Date()
       },  
