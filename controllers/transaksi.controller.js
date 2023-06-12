@@ -1,5 +1,7 @@
 const models = require("../models");
-const { Transaksi, User, Rute, Jadwal_driver, Driver, Hari, Jam } = models;
+const { Op, literal, fn } = require("sequelize");
+const { Transaksi, User, Rute, Jadwal_driver, Driver, Hari, Jam, sequelize } =
+  models;
 
 const midtransClient = require("midtrans-client");
 
@@ -199,6 +201,182 @@ module.exports = {
         status: res.statusCode,
         message: error.message,
       });
+    }
+  },
+
+  rekapAllTransaksi: async (req, res, next) => {
+    try {
+      const transaksi = await Transaksi.findAll({
+        attributes: [
+          "Jadwal_driver.DriverId",
+          [sequelize.fn("SUM", sequelize.col("total")), "total_pendapatan"],
+          [
+            sequelize.literal(
+              `(SELECT COUNT(*) FROM transaksis AS t JOIN jadwal_drivers AS j ON t.JadwalDriverId = j.id WHERE j.DriverId = Jadwal_driver.DriverId)`
+            ),
+            "jumlah_transaksi",
+          ],
+        ],
+        include: [
+          {
+            model: Jadwal_driver,
+            attributes: ["DriverId"],
+            include: [
+              {
+                model: Driver,
+                attributes: ["nama"],
+              },
+            ],
+          },
+        ],
+        group: ["Jadwal_driver.DriverId"],
+        order: [["jumlah_transaksi", "DESC"]],
+      });
+
+      res.json({
+        message: "Data ditemukan!",
+        data: transaksi,
+      });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "Terjadi kesalahan saat mengambil data Transaksi." });
+    }
+  },
+
+  rekapTransaksi: async (req, res, next) => {
+    try {
+      // Ambil rentang tanggal dari req.params
+      const startDate = new Date(req.params.startDate);
+      const endDate = new Date(req.params.endDate);
+
+      // Query menggunakan Sequelize
+      const transaksi = await Transaksi.findAll({
+        attributes: [
+          "Jadwal_driver.DriverId", // Kolom yang ingin dikelompokkan
+          [sequelize.fn("SUM", sequelize.col("total")), "total_pendapatan"], // Kolom harga yang dijumlahkan
+          [
+            sequelize.literal(
+              `(
+                SELECT COUNT(*)
+                FROM transaksis AS t
+                JOIN jadwal_drivers AS j ON t.JadwalDriverId = j.id
+                WHERE j.DriverId = Jadwal_driver.DriverId
+                AND t.updatedAt BETWEEN '${startDate.toISOString()}' AND '${endDate.toISOString()}'
+              )`
+            ),
+            "jumlah_transaksi",
+          ],
+          [
+            sequelize.fn('COUNT', sequelize.literal('DISTINCT tanggal, JadwalDriverId')),
+            'jumlah_perjalanan',
+          ],
+        ],
+        include: [
+          {
+            model: Jadwal_driver,
+            attributes: ["DriverId"],
+            include: [
+              {
+                model: Driver,
+                attributes: ["nama"],
+              },
+            ],
+          },
+        ],
+        where: {
+          updatedAt: {
+            [Op.between]: [startDate.toISOString(), endDate.toISOString()], // Filter berdasarkan rentang updatedAt
+          },
+        },
+        group: ["Jadwal_driver.DriverId"], // Group by Jadwal_driver.DriverId
+        order: [["jumlah_transaksi", "DESC"]],
+      });
+
+      res.json({
+        message: "Data ditemukan!",
+        data: transaksi,
+      });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "Terjadi kesalahan saat mengambil data Transaksi." });
+    }
+  },
+
+  reportAllTransaksi: async (req, res, next) => {
+    const { driverId } = req.params;
+    try {
+      const transaksi = await Transaksi.findAll({
+        include: [
+          {
+            model: Jadwal_driver,
+            where: { DriverId: driverId },
+          },
+        ],
+      });
+
+      res.json({
+        message: "Data ditemukan!",
+        data: transaksi,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Terjadi kesalahan pada server" });
+    }
+  },
+
+  reportTransaksi: async (req, res, next) => {
+    const startDate = new Date(req.params.startDate);
+    const endDate = new Date(req.params.endDate);
+    const { driverId } = req.params;
+
+    try {
+      const transaksi = await Transaksi.findAll({
+        include: [
+          {
+            model: Jadwal_driver,
+            where: { Driverid: driverId },
+            include: [
+              {
+                model: Driver,
+                as: "Driver",
+              },
+              {
+                model: Rute,
+                as: "Rute",
+              },
+              {
+                model: Jam,
+                as: "Jam",
+              },
+              {
+                model: Hari,
+                as: "Hari",
+              },
+            ],
+          },
+          {
+            model: User,
+            as: "User",
+          },
+        ],
+        where: {
+          updatedAt: {
+            [Op.between]: [startDate.toISOString(), endDate.toISOString()],
+          },
+        },
+      });
+
+      res.json({
+        message: "Data ditemukan!",
+        data: transaksi,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Terjadi kesalahan pada server" });
     }
   },
 

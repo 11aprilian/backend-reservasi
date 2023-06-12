@@ -5,6 +5,10 @@ const {
   getAllTransaksi,
   getTransaksiByID,
   getTransaksiByUserID,
+  rekapAllTransaksi,
+  rekapTransaksi,
+  reportTransaksi,
+  reportAllTransaksi,
   addTransaksi,
   deleteTransaksiByID,
   updateTransaksiByID,
@@ -18,6 +22,10 @@ router.get("/", getAllTransaksi);
 router.get("/:id", getTransaksiByID);
 router.get("/user/:id", getTransaksiByUserID);
 router.get("/user/:id/:status", getTransaksiByStatus);
+router.get("/rekap/all", rekapAllTransaksi);
+router.get("/rekap/:startDate/:endDate", rekapTransaksi);
+router.get("/report/:driverId", reportAllTransaksi);
+router.get("/report/:driverId/:startDate/:endDate", reportTransaksi);
 router.post("/", verifyUserToken, addTransaksi);
 router.delete("/:id", deleteTransaksiByID);
 router.put("/:id", updateTransaksiByID);
