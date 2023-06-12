@@ -368,6 +368,7 @@ module.exports = {
             [Op.between]: [startDate.toISOString(), endDate.toISOString()],
           },
         },
+        order: [["updatedAt", "DESC"]],
       });
 
       res.json({
