@@ -212,9 +212,18 @@ module.exports = {
           [sequelize.fn("SUM", sequelize.col("total")), "total_pendapatan"],
           [
             sequelize.literal(
-              `(SELECT COUNT(*) FROM transaksis AS t JOIN jadwal_drivers AS j ON t.JadwalDriverId = j.id WHERE j.DriverId = Jadwal_driver.DriverId)`
+              `(
+                SELECT COUNT(*)
+                FROM transaksis AS t
+                JOIN jadwal_drivers AS j ON t.JadwalDriverId = j.id
+                WHERE j.DriverId = Jadwal_driver.DriverId
+              )`
             ),
             "jumlah_transaksi",
+          ],
+          [
+            sequelize.fn('COUNT', sequelize.literal('DISTINCT tanggal, JadwalDriverId')),
+            'jumlah_perjalanan',
           ],
         ],
         include: [
@@ -263,6 +272,7 @@ module.exports = {
                 FROM transaksis AS t
                 JOIN jadwal_drivers AS j ON t.JadwalDriverId = j.id
                 WHERE j.DriverId = Jadwal_driver.DriverId
+                AND t.paid = "settlement"
                 AND t.updatedAt BETWEEN '${startDate.toISOString()}' AND '${endDate.toISOString()}'
               )`
             ),
@@ -286,6 +296,7 @@ module.exports = {
           },
         ],
         where: {
+          paid: "settlement",
           updatedAt: {
             [Op.between]: [startDate.toISOString(), endDate.toISOString()], // Filter berdasarkan rentang updatedAt
           },
@@ -307,15 +318,44 @@ module.exports = {
   },
 
   reportAllTransaksi: async (req, res, next) => {
-    const { driverId } = req.params;
+    const startDate = new Date(req.params.startDate);
+    const endDate = new Date(req.params.endDate);
     try {
       const transaksi = await Transaksi.findAll({
         include: [
           {
             model: Jadwal_driver,
-            where: { DriverId: driverId },
+            include: [
+              {
+                model: Driver,
+                as: "Driver",
+              },
+              {
+                model: Rute,
+                as: "Rute",
+              },
+              {
+                model: Jam,
+                as: "Jam",
+              },
+              {
+                model: Hari,
+                as: "Hari",
+              },
+            ],
+          },
+          {
+            model: User,
+            as: "User",
           },
         ],
+        where: {
+          paid:"settlement",
+          updatedAt: {
+            [Op.between]: [startDate.toISOString(), endDate.toISOString()],
+          },
+        },
+        order: [["updatedAt", "DESC"]],
       });
 
       res.json({
@@ -364,6 +404,7 @@ module.exports = {
           },
         ],
         where: {
+          paid: "settlement",
           updatedAt: {
             [Op.between]: [startDate.toISOString(), endDate.toISOString()],
           },
