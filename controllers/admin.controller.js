@@ -132,22 +132,23 @@ module.exports = {
   login: async (req, res) => {
     const { username, password } = req.body;
     const admin = await Admin.findOne({ where: { username: username } });
-    const checkPass = await bcrypt.compare(password, admin.password);
-
-    if (!admin)
+    if (admin) {
+      const checkPass = await bcrypt.compare(password, admin.password);
+      if (!checkPass) {
+        return res
+          .status(400)
+          .send({ message: "Password yang dimasukkan salah!" });
+      } else {
+        const token = jwt.sign({ id: admin.id }, process.env.ADMIN_KEY);
+        res.send({
+          message: "Login Berhasil!",
+          token,
+          id: admin.id,
+          username: admin.username,
+        });
+      }
+    } else {
       return res.status(404).send({ message: "User tidak ditemukan!" });
-
-    if (!checkPass)
-      return res
-        .status(400)
-        .send({ message: "Password yang dimasukkan salah!" });
-
-    const token = jwt.sign({ id: admin.id }, process.env.ADMIN_KEY);
-    res.send({
-      message: "Login berhasil!",
-      token,
-      id: admin.id,
-      username: admin.username,
-    });
+    }
   },
 };
