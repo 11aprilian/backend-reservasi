@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       Jadwal_driver.belongsTo(models.Driver)
       models.Driver.hasMany(Jadwal_driver)
 
+      Jadwal_driver.belongsTo(models.Armada)
+      models.Armada.hasMany(Jadwal_driver)
+
     }
   }
   Jadwal_driver.init({

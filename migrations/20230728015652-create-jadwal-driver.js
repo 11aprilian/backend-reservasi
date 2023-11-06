@@ -25,6 +25,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: 'Drivers', key: 'id' }
       },
+      ArmadaId: {
+        type: Sequelize.INTEGER,
+        references: { model: 'Armadas', key: 'id' }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -11,6 +11,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: { model: 'Jadwal_drivers', key: 'id' }
       },
+      SeatId: {
+        type: Sequelize.INTEGER,
+        references: { model: 'Seats', key: 'id' }
+      },
       id: {
         allowNull: false,
         primaryKey: true,

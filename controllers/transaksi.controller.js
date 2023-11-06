@@ -1,7 +1,16 @@
 const models = require("../models");
 const { Op, literal, fn } = require("sequelize");
-const { Transaksi, User, Rute, Jadwal_driver, Driver, Hari, Jam, sequelize } =
-  models;
+const {
+  Transaksi,
+  User,
+  Rute,
+  Jadwal_driver,
+  Driver,
+  Hari,
+  Jam,
+  Seat,
+  sequelize,
+} = models;
 
 const midtransClient = require("midtrans-client");
 
@@ -21,6 +30,10 @@ module.exports = {
             as: "User",
           },
           {
+            model: Seat,
+            as: "Seat",
+          },
+          {
             model: Jadwal_driver,
             as: "Jadwal_driver",
             include: [
@@ -35,10 +48,6 @@ module.exports = {
               {
                 model: Hari,
                 as: "Hari",
-              },
-              {
-                model: Jam,
-                as: "Jam",
               },
             ],
           },
@@ -66,6 +75,10 @@ module.exports = {
           {
             model: User,
             as: "User",
+          },
+          {
+            model: Seat,
+            as: "Seat",
           },
           {
             model: Jadwal_driver,
@@ -138,6 +151,10 @@ module.exports = {
               {
                 model: Jam,
                 as: "Jam",
+              },
+              {
+                model: Seat,
+                as: "Seat",
               },
             ],
           },
@@ -222,8 +239,11 @@ module.exports = {
             "jumlah_transaksi",
           ],
           [
-            sequelize.fn('COUNT', sequelize.literal('DISTINCT tanggal, JadwalDriverId')),
-            'jumlah_perjalanan',
+            sequelize.fn(
+              "COUNT",
+              sequelize.literal("DISTINCT tanggal, JadwalDriverId")
+            ),
+            "jumlah_perjalanan",
           ],
         ],
         include: [
@@ -279,8 +299,11 @@ module.exports = {
             "jumlah_transaksi",
           ],
           [
-            sequelize.fn('COUNT', sequelize.literal('DISTINCT tanggal, JadwalDriverId')),
-            'jumlah_perjalanan',
+            sequelize.fn(
+              "COUNT",
+              sequelize.literal("DISTINCT tanggal, JadwalDriverId")
+            ),
+            "jumlah_perjalanan",
           ],
         ],
         include: [
@@ -350,7 +373,7 @@ module.exports = {
           },
         ],
         where: {
-          paid:"settlement",
+          paid: "settlement",
           updatedAt: {
             [Op.between]: [startDate.toISOString(), endDate.toISOString()],
           },
@@ -424,10 +447,12 @@ module.exports = {
 
   addTransaksi: async (req, res, next) => {
     coreApi.charge(req.body).then((chargeResponse) => {
+
       var dataOrder = {
         id: chargeResponse.order_id,
         UserId: req.body.UserId,
         JadwalDriverId: req.body.JadwalDriverId,
+        SeatId: req.body.SeatId,
         nama: req.body.nama,
         alamat: req.body.alamat,
         tanggal: req.body.tanggal,
@@ -443,6 +468,7 @@ module.exports = {
           JSON.stringify(
             chargeResponse.va_numbers.map(({ va_number }) => va_number)
           ).replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, ""),
+        expiration: 600
       };
 
       Transaksi.create(dataOrder)

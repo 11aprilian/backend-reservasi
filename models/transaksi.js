@@ -16,11 +16,15 @@ module.exports = (sequelize, DataTypes) => {
 
       Transaksi.belongsTo(models.Jadwal_driver)
       models.Jadwal_driver.hasMany(Transaksi)
+
+      Transaksi.belongsTo(models.Seat)
+      models.Seat.hasMany(Transaksi)
     }
   }
   Transaksi.init({
     UserId: DataTypes.INTEGER,
     JadwalDriverId: DataTypes.INTEGER,
+    SeatId: DataTypes.INTEGER,
     nama: DataTypes.STRING,
     alamat: DataTypes.STRING,
     no_hp: DataTypes.STRING,

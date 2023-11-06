@@ -1,5 +1,5 @@
 const models = require("../models");
-const { Jadwal_driver, Hari, Jam, Rute, Driver } = models;
+const { Jadwal_driver, Hari, Jam, Rute, Driver, Armada } = models;
 
 module.exports = {
   getAllJadwalDriver: async (req, res) => {
@@ -21,6 +21,10 @@ module.exports = {
             {
               model: Driver,
               as: "Driver",
+            },
+            {
+              model: Armada,
+              as: "Armada",
             },
           ],
           
@@ -58,6 +62,10 @@ module.exports = {
               model: Driver,
               as: "Driver",
             },
+            {
+              model: Armada,
+              as: "Armada",
+            },
           ],
           order: [["HariId", "DESC"]],
           where: {HariId : id}
@@ -94,6 +102,10 @@ module.exports = {
             {
               model: Driver,
               as: "Driver",
+            },
+            {
+              model: Armada,
+              as: "Armada",
             },
           ],
           where: {
@@ -136,6 +148,10 @@ module.exports = {
             model: Driver,
             as: "Driver",
           },
+          {
+            model: Armada,
+            as: "Armada",
+          },
         ],
       });
 
@@ -162,7 +178,8 @@ module.exports = {
       HariId: req.body.HariId,
       JamId : req.body.JamId,
       RuteId: req.body.RuteId,
-      DriverId : req.body.DriverId
+      DriverId : req.body.DriverId,
+      ArmadaId : req.body.ArmadaId
     })
       .then(function (result) {
         res.json(result);
@@ -190,6 +207,7 @@ module.exports = {
     Jadwal_driver.update(
       {
         DriverId: req.body.DriverId,
+        ArmadaId: req.body.ArmadaId,
       },
       {
         where: {
